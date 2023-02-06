@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<!--
+	Aerial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Adivina adivinador</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<div id="bg"></div>
+			<div id="overlay"></div>
+			<div id="main">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>Adivina la siguiente palabra!</h1>
+						<p> ¡O TE CONGELARAS!</p>
+						
+						<style>
+							.container {
+							  display: flex;
+							  flex-direction: column;
+							  align-items: center;
+							  font-family: Arial, sans-serif;
+							}
+							
+							#word {
+							  font-size: 36px;
+							  font-weight: bold;
+							  margin-top: 50px;
+							  color: rgb(1, 0, 7);
+							}
+							
+							input[type="text"] {
+							  padding: 10px 20px;
+							  font-size: 24px;
+							  margin-top: 20px;
+							  color: rgb(1, 0, 7);
+							}
+							
+							button {
+							  padding: 10px 20px;
+							  font-size: 24px;
+							  margin-top: 20px;
+							  background-color: rgb(134, 185, 202);
+							  border: none;
+							  border-radius: 5px;
+							  cursor: pointer;
+							}
+							
+							#result {
+							  margin-top: 20px;
+							  font-size: 24px;
+							}
+							
+							#hints {
+							  margin-top: 20px;
+							  font-size: 24px;
+							  color: rgb(1, 0, 7);
+							}
+						  </style>
+						</head>
+						<body>
+						  <div class="container">
+							<div id="word">_ _ _ _ _</div>
+							<input type="text" id="letter">
+							<button id="guess">Adivinar</button>
+							<p id="result"></p>
+							<p id="hints"></p>
+						  </div>
+						</body>
+						<script>
+							const wordList = ['perro', 'gato', 'ratón', 'elefante', 'jirafa'];
+							const word = wordList[Math.floor(Math.random() * wordList.length)];
+							const wordState = new Array(word.length + 1).join('_').split('');
+							let hints = [];
+							const result = document.getElementById('result');
+							const hintsElement = document.getElementById('hints');
+							const wordElement = document.getElementById('word');
+							const letterInput = document.getElementById('letter');
+							const guessButton = document.getElementById('guess');
+							let incorrectGuesses = 0;
+							
+							if (result && hintsElement && wordElement && letterInput && guessButton) {
+							  for (let i = 0; i < word.length; i++) {
+								if (!hints.includes(word[i])) {
+								  hints.push(word[i]);
+								}
+							  }
+							
+							  hints.sort(function() {
+								return 0.5 - Math.random();
+							  });
+							  hintsElement.textContent = `Pistas: ${hints.join(', ')}`;
+							
+							  guessButton.addEventListener('click', function() {
+								const letter = letterInput.value.trim();
+							
+								if (!letter) {
+								  result.textContent = 'Por favor ingrese una letra.';
+								  return;
+								}
+							
+								if (word.includes(letter)) {
+								  result.textContent = 'Acertaste!';
+								  for (let i = 0; i < word.length; i++) {
+									if (word[i] === letter) {
+									  wordState[i] = letter;
+									}
+								  }
+								  wordElement.textContent = wordState.join(' ');
+								} else {
+								  result.textContent = 'CONGELADO.';
+								  incorrectGuesses++;
+								}
+							  });
+							} else {
+							  console.error('Uno o más elementos HTML no se encuentran en la página.');
+							}
+							
+						</script>
+					</header>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<span class="copyright">&copy; Juego creado por: <a href="http://html5up.net">Andrés Pravata</a>.</span>
+					</footer>
+
+			</div>
+		</div>
+		<script>
+			window.onload = function() { document.body.classList.remove('is-preload'); }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; }
+		</script>
+	</body>
+</html>
